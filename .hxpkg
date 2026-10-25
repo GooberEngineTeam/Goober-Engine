@@ -91,6 +91,10 @@
                 "name": "foxlite",
                 "link": "https://github.com/dwdvIl/foxlite",
                 "dir": "master"
+            },
+            {
+                "name": "hxp",
+                "version": "1.3.1"
             }
         ]
     }

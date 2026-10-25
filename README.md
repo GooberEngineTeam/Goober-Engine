@@ -14,7 +14,7 @@ Havee fun with NightmareVision V1! (***[follow me on twitter](https://twitter.co
 
 * Rozebud for the chart editor little buddies, and the overhauled camera system ([Check out their engine too](https://github.com/ThatRozebudDude/FPS-Plus-Public))
 
-* FunkinCrew for their [Lime](https://github.com/FunkinCrew/lime), [Openfl](https://github.com/FunkinCrew/openfl), [Hxcpp](https://github.com/FunkinCrew/hxcpp) forks
+* FunkinCrew for their [Lime](https://github.com/FunkinCrew/lime), [Openfl](https://github.com/FunkinCrew/openfl), [Hxcpp](https://github.com/FunkinCrew/hxcpp) forks and for their [Project.hxp](https://github.com/FunkinCrew/Funkin/blob/main/project.hxp) file
 
 * MaybeMaru for [MoonChart](https://github.com/MaybeMaru/moonchart) and [Flixel-Animate](https://github.com/MaybeMaru/flixel-animate)
 

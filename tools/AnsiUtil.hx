@@ -1,6 +1,6 @@
 // Literally a copy of the one used in the Logger file... i got lazy
 
-package building.utils;
+package tools;
 
 /**
  * Enum abstract representing ANSI codes for text colors, background colors, and text styles.
@@ -115,7 +115,7 @@ class AnsiUtil
 
 	public static inline function error(str:String):String return AnsiUtil.bold(AnsiUtil.bg_red(str));
 	public static inline function warning(str:String):String return AnsiUtil.bold(AnsiUtil.bg_yellow(str));
-	public static inline function log(str:String):String return AnsiUtil.bold(AnsiUtil.bg_blue(str));
+	public static inline function info(str:String):String return AnsiUtil.bold(AnsiUtil.bg_blue(str));
 	public static inline function notice(str:String):String return AnsiUtil.bold(AnsiUtil.bg_green(str));
 
 	// Text styles

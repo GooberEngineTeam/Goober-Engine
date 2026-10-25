@@ -113,7 +113,7 @@ class AnsiUtil
 
 	public static inline function error(str:String):String return AnsiUtil.bold(AnsiUtil.bg_red(str));
 	public static inline function warning(str:String):String return AnsiUtil.bold(AnsiUtil.bg_yellow(str));
-	public static inline function log(str:String):String return AnsiUtil.bold(AnsiUtil.bg_blue(str));
+	public static inline function info(str:String):String return AnsiUtil.bold(AnsiUtil.bg_blue(str));
 	public static inline function notice(str:String):String return AnsiUtil.bold(AnsiUtil.bg_green(str));
 
 	// Text styles

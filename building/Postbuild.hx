@@ -4,7 +4,7 @@ import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
-using building.utils.AnsiUtil;
+using tools.AnsiUtil;
 
 /**
 * A script which executes after the game is built.

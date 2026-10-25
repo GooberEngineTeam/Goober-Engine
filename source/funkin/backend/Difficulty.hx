@@ -37,7 +37,7 @@ class Difficulty
 		
 		if (fileSuffix == null)
 		{
-			Logger.log('difficulty in index $number does not exist');
+			Logger.log('difficulty in index $number does not exist', ERROR);
 			return Paths.sanitize(defaultDifficulty);
 		}
 		

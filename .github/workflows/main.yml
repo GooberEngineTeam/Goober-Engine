@@ -54,6 +54,7 @@ jobs: # FUCK MY LIFE BROOOOO
                 Run haxelib setup C:/haxelib
                 Run haxelib install hxpkg --quiet
                 Run haxelib run hxpkg install
+                Run haxelib run hxp --install-hxp-alias
                 if (Test-Path .haxelib/lime) {
                   Remove-Item -Recurse -Force -LiteralPath .haxelib/lime
                 }

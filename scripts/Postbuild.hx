@@ -1,4 +1,4 @@
-package building;
+package scripts;
 
 import sys.FileSystem;
 import sys.io.File;
@@ -7,13 +7,16 @@ using StringTools;
 using tools.AnsiUtil;
 
 /**
-* A script which executes after the game is built.
-*/
+ * A script which executes after the game is built.
+ */
 class Postbuild
 {
 	static inline final BUILD_TIME_FILE:String = '.build_time';
 
-	static function main():Void printBuildTime();
+	static function main():Void
+	{
+		printBuildTime();
+	}
 
 	static function printBuildTime():Void
 	{

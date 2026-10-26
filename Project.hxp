@@ -19,13 +19,15 @@ using tools.AnsiUtil;
  *
  * This makes it far easier to organize, reuse, and refactor,
  * and improves management of feature flag logic.
+ *
+ * borrowed from FunkinCrew https://github.com/FunkinCrew/Funkin/blob/main/project.hxp
 */
 @:nullSafety
 class Project extends HXProject
 {
-	//
-	// METADATA
-	//
+	/**
+	 * METADATA
+	*/
 
 	static final VERSION:String = "1.0.0";
 	static final TITLE:String = "Friday Night Funkin: Goober Engine";
@@ -35,17 +37,17 @@ class Project extends HXProject
 	static final MAIN_CLASS:String = "Main";
 	static final COMPANY:String = "Goober";
 
-	//
-	// BUILD SCRIPTS
-	//
+	/**
+	 * BUILD SCRIPTS
+	*/
 
-	static final PREBUILD_HX:String = "building/Prebuild.hx";
-	static final POSTBUILD_HX:String = "building/Postbuild.hx";
+	static final PREBUILD_HX:String = "scripts/Prebuild.hx";
+	static final POSTBUILD_HX:String = "scripts/Postbuild.hx";
 
-	//
-	// ENGINE CONFIGS
-	// Inverse feature flags are automatically populated.
-	//
+	/**
+	 * ENGINE CONFIGS
+	 * Inverse feature flags are automatically populated.
+	*/
 
 	static final MODS_ALLOWED:FeatureFlag = "MODS_ALLOWED";
 	static final VIDEOS_ALLOWED:FeatureFlag = "VIDEOS_ALLOWED";
@@ -56,20 +58,16 @@ class Project extends HXProject
 	static final FEATURE_DEBUG_TRACY:FeatureFlag = "FEATURE_DEBUG_TRACY";
 	static final CRASH_HANDLER:FeatureFlag = "CRASH_HANDLER";
 
-	//
-	// CONFIGURATION FUNCTIONS
-	//
+	/**
+	 * CONFIGURATION FUNCTIONS
+	*/
 
 	public function new()
 	{
 		super();
 
 		#if !target.unicode
-		if (isWindowsHost())
-		{
-			// Enable code page 65001 for unicode support
-			Sys.command("chcp 65001 > nul");
-		}
+		if (isWindowsHost()) Sys.command("chcp 65001 > nul"); // Enable code page 65001 for unicode support
 		#end
 
 		flair();
@@ -77,11 +75,7 @@ class Project extends HXProject
 		configureApp();
 		configureOutputDir();
 
-		if (isRun() || isInstall())
-		{
-			// These commands dont really need much in order to run so to improve the speed, we return here.
-			return;
-		}
+		if (isRun() || isInstall()) return; // These commands dont really need much in order to run so to improve the speed, we return here.
 
 		configureFeatureFlags();
 		configureCompileDefines();
@@ -119,7 +113,7 @@ class Project extends HXProject
 		this.meta.company = COMPANY;
 
 		this.app.main = MAIN_CLASS;
-		this.app.file = "Friday Night Funkin";
+		this.app.file = EXECUTABLE_NAME;
 
 		this.sources.push(SOURCE_DIR);
 
@@ -211,7 +205,7 @@ class Project extends HXProject
 	function configureFeatureFlags()
 	{
 		// You can explicitly override any of these.
-		// For example, `-DGITHUB_BUILD` or `-DNO_HARDCODED_CREDITS`
+		// For example, `-DFEATURE_DEBUG_TRACY` or `-DNO_MODS_ALLOWED`
 
 		MODS_ALLOWED.apply(this, isDesktop());
 		VIDEOS_ALLOWED.apply(this, isCPP());
@@ -400,11 +394,7 @@ class Project extends HXProject
 
 	function configureAssets()
 	{
-		if (!(isDisplay() || isCleanCommand()))
-		{
-			// Delete the assets folder from the export folder before adding anything.
-			clearAssets();
-		}
+		if (!(isDisplay() || isCleanCommand())) clearAssets(); // Delete the assets folder from the export folder before adding anything.
 
 		var shouldEmbedMods = ASSET_REDIRECT.isEnabled(this);
 		
@@ -496,10 +486,10 @@ class Project extends HXProject
 		info('Done configuring icons.');
 	}
 
-	//
-	// HELPER FUNCTIONS
-	// Easy functions to make the code more readable.
-	//
+	/**
+	 * HELPER FUNCTIONS
+	 * Easy functions to make the code more readable.
+	*/
 
 	public function isWeb():Bool
 	{
@@ -731,7 +721,7 @@ class Project extends HXProject
 		// Validate path.
 		if (!FileSystem.exists(path)) error('Could not find asset path "${path}".');
 		else if (!FileSystem.isDirectory(path)) error('Could not parse asset path "${path}", expected a directory.');
-		else // info('  Found asset path "${path}".');
+		else // info('Found asset path "${path}".');
 
 		for (file in FileSystem.readDirectory(path))
 		{
@@ -747,9 +737,22 @@ class Project extends HXProject
 		}
 	}
 
-	//
-	// PROCESS FUNCTIONS
-	//
+	/**
+	 * Add an asset library to the game build.
+	 * @param name The name of the library.
+	 * @param embed
+	 * @param preload
+	*/
+	public function addAssetLibrary(name:String, embed:Bool = false, preload:Bool = false):Void
+	{
+		// sourcePath, name, type, embed, preload, generate, prefix
+		var sourcePath = '';
+		this.libraries.push(new Library(sourcePath, name, null, embed, preload, false, ""));
+	}
+
+	/**
+	 * PROCESS FUNCTIONS
+	*/
 
 	/**
 	 * A CLI command to run a command in the shell.
@@ -769,7 +772,6 @@ class Project extends HXProject
 
 	public function getGitCommit():String
 	{
-		// Cannibalized from GitCommit.hx
 		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
 		if (process.exitCode() != 0)
 		{
@@ -792,7 +794,6 @@ class Project extends HXProject
 
 	public function getGitBranch():String
 	{
-		// Cannibalized from GitCommit.hx
 		var branchProcess = new sys.io.Process('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
 
 		if (branchProcess.exitCode() != 0)
@@ -865,9 +866,9 @@ class Project extends HXProject
 		Sys.setCwd(oldDir);
 	}
 
-	//
-	// LOGGING FUNCTIONS
-	//
+	/**
+	 * LOGGING FUNCTIONS
+	*/
 
 	/**
 	 * Display an error message. This should stop the build process.
@@ -883,10 +884,7 @@ class Project extends HXProject
 	*/
 	public function notice(message:String):Void
 	{
-		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall()))
-		{
-			Sys.println(' NOTICE '.notice() + " " + message.fg(AnsiCode.GREEN).reset());
-		}
+		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' NOTICE '.notice() + " " + message.fg(AnsiCode.GREEN).reset());
 	}
 
 	/**
@@ -894,10 +892,7 @@ class Project extends HXProject
 	*/
 	public function info(message:String):Void
 	{
-		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall()))
-		{
-			Sys.println(' INFO '.info() + " " + message);
-		}
+		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' INFO '.info() + " " + message);
 	}
 }
 
@@ -929,28 +924,12 @@ abstract FeatureFlag(String) from String to String
 	{
 		// TODO: Name this function better?
 
-		if (isEnabled(project))
-		{
-			// If this flag was already enabled, disable the inverse.
-			getInverse().disable(project, false);
-		}
-		else if (getInverse().isEnabled(project))
-		{
-			// If the inverse flag was already enabled, disable this flag.
-			disable(project, false);
-		}
+		if (isEnabled(project)) getInverse().disable(project, false); // If this flag was already enabled, disable the inverse.
+		else if (getInverse().isEnabled(project)) disable(project, false); // If the inverse flag was already enabled, disable this flag.
 		else
 		{
-			if (enableByDefault)
-			{
-				// Enable this flag if it was unset, and disable the inverse.
-				enable(project, true);
-			}
-			else
-			{
-				// Disable this flag if it was unset, and enable the inverse.
-				disable(project, true);
-			}
+			if (enableByDefault) enable(project, true); // Enable this flag if it was unset, and disable the inverse.
+			else disable(project, true); // Disable this flag if it was unset, and enable the inverse.
 		}
 	}
 

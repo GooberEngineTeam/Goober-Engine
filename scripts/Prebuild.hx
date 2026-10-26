@@ -1,11 +1,11 @@
-package building;
+package scripts;
 
 import sys.io.File;
 
 using tools.AnsiUtil;
 
 /**
-* A script which executes before the game is built.
+ * A script which executes before the game is built.
 */
 class Prebuild
 {

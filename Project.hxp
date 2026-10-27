@@ -150,7 +150,7 @@ class Project extends HXProject
 			this.window.height = 0;
 		}
 
-        setenv("HAXEPATH", "./");
+		setenv("HAXEPATH", "./");
 	}
 
 	/**
@@ -645,15 +645,15 @@ class Project extends HXProject
 		return this.defines.exists(name);
 	}
 
-    public inline function setDefine(name:String, ?value:String):Void
-    {
+	public inline function setDefine(name:String, ?value:String):Void
+	{
 		defines.set(name, value ?? "");
-    }
+	}
 
 	public inline function unsetDefine(name:String):Void
-    {
+	{
 		defines.remove(name);
-    }
+	}
 
 	/**
 	 * Add a library to the list of dependencies for the project.

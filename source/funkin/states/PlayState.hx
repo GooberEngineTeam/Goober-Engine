@@ -262,6 +262,12 @@ class PlayState extends MusicBeatState
 	var camFollowOffset:FlxPoint;
 	var camFollowOffsetTween:FlxTween;
 
+	var defaultCamAngle:Float = 0;
+	var defaultCamAngleTween:FlxTween;
+	
+	var camAngleOffset:Float = 0;
+	var camAngleOffsetTween:FlxTween;
+	
 	var camFollowPoint:FlxPoint;
 	var camFollowTween:FlxTween;
 
@@ -1777,6 +1783,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.camera.zoom = defaultCamZoom + defaultCamZoomAdd + defaultCamZoomBop;
 		camHUD.zoom = defaultHudZoom + defaultHudZoomAdd + defaultHudZoomBop;
+
+		FlxG.camera.scrollAngle = defaultCamAngle + camAngleOffset;
 		
 		final arg = [elapsed];
 		scripts.call('onUpdate', arg);
@@ -2702,7 +2710,7 @@ class PlayState extends MusicBeatState
 	
 	function updateCameraOffsets(char:Character)
 	{
-		if (ClientPrefs.noteCamIntensity > 0)
+		if (ClientPrefs.noteCamIntensity > 0 && ClientPrefs.noteCamType != "Disabled")
 		{
 			final displacement = (char.getSingDisplacement() * ClientPrefs.noteCamIntensity);
 			
@@ -2718,6 +2726,19 @@ class PlayState extends MusicBeatState
 			});
 			
 			displacement.putWeak();
+			
+			if (ClientPrefs.noteCamType == "Dynamic")
+			{
+				if (camAngleOffsetTween != null) camAngleOffsetTween.cancel();
+				
+				camAngleOffsetTween = FlxTween.tween(this, {camAngleOffset: displacement.x * 0.05}, 1.4 / (cameraSpeed * playbackRate),
+				{
+					ease: FlxEase.expoOut,
+					onComplete: function(twn:FlxTween) {
+						camAngleOffsetTween = null;
+					}
+				});
+			}
 		}
 	}
 	
@@ -2732,6 +2753,16 @@ class PlayState extends MusicBeatState
 		if (lockPosition) isCameraOnForcedPos = true;
 	}
 
+	public function camChangeAngle(angle:Float, time:Float, ?ease:Null<flixel.tweens.EaseFunction>, ?onComplete:Null<TweenCallback> = null):Void
+	{
+		if (onComplete == null) onComplete = function(tween:FlxTween) {
+		};
+		
+		if (defaultCamAngleTween != null) defaultCamAngleTween.cancel();
+		if (time > 0) defaultCamAngleTween = FlxTween.tween(this, {defaultCamAngle: angle}, time, {ease: ease, onComplete: onComplete});
+		else defaultCamAngle = angle;
+	}
+	
 	public function camChangeZoom(zoom:Float, time:Float, ?ease:Null<flixel.tweens.EaseFunction>, ?onComplete:Null<TweenCallback> = null):Void
 	{
 		if(onComplete == null) onComplete = function(tween:FlxTween){};
@@ -2791,7 +2822,7 @@ class PlayState extends MusicBeatState
 		else defaultHudZoomBop = zoom;
 	}
 
-	public function uiBop(?camZoom:Float = 0.01, ?uiZoom:Float = 0.02, ?time:Float = 0.6, ?ease:Null<flixel.tweens.EaseFunction>)
+	public function uiBop(?camZoom:Float = 0.015, ?uiZoom:Float = 0.03, ?time:Float = 0.8, ?ease:Null<flixel.tweens.EaseFunction>)
 	{
 		if (!ClientPrefs.camZooms) return;
 

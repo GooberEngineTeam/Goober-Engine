@@ -81,6 +81,8 @@ class ClientPrefs
 	@saveVar public static var healthBarAlpha:Float = 1;
 	
 	@saveVar public static var noteCamIntensity:Float = 1.0;
+
+	@saveVar public static var noteCamType:String = 'Simple';
 	
 	@saveVar public static var underlayType:String = 'Lane Underlay';
 	

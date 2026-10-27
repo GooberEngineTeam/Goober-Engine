@@ -70,6 +70,8 @@ class Project extends HXProject
 		if (isWindowsHost()) Sys.command("chcp 65001 > nul"); // Enable code page 65001 for unicode support
 		#end
 
+        info("Configuring project...");
+
 		flair();
 		displayTarget();
 		configureApp();
@@ -86,6 +88,10 @@ class Project extends HXProject
 		if (!isLinux()) configureIcons();
 
 		if (isCPP()) buildHxCppTools();
+
+		notice("Configured project successfully!");
+		info("Starting build...");
+		Sys.println("");
 	}
 
 	/**

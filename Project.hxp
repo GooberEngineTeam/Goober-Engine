@@ -89,7 +89,7 @@ class Project extends HXProject
 
 		if (isCPP()) buildHxCppTools();
 
-		notice("Configured project successfully!");
+		info("Configured project successfully!");
 		info("Starting build...");
 	}
 
@@ -101,6 +101,9 @@ class Project extends HXProject
 		info("Goober Engine - " + VERSION);
 		info("Initializing build...");
 
+		info("Git Branch:	 " + getGitBranch());
+		info("Git Commit:	 " + getGitCommit());
+		info("Git Modified?   " + getGitModified());
 		info("Display?		" + isDisplay());
 	}
 
@@ -784,11 +787,72 @@ class Project extends HXProject
 		return CommandHelper.interpretHaxe(path);
 	}
 
+	public function getGitCommit():String
+	{
+		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
+		if (process.exitCode() != 0)
+		{
+			var message = process.stderr.readAll().toString();
+			error('Could not determine current git commit; is this a proper Git repository?');
+		}
+
+		var commitHash:String = process.stdout.readLine();
+		var commitHashSplice:String = commitHash.substr(0, 7);
+
+		return commitHashSplice;
+	}
+
 	static function getLibraryPath(libraryName:String):String
 	{
 		var process = new sys.io.Process('haxelib', ['libpath', libraryName]);
 		@:privateAccess
 		return process.stdout.readLine();
+	}
+
+	public function getGitBranch():String
+	{
+		var branchProcess = new sys.io.Process('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+
+		if (branchProcess.exitCode() != 0)
+		{
+			var message = branchProcess.stderr.readAll().toString();
+			error('Could not determine current git branch; is this a proper Git repository?');
+		}
+
+		var branchName:String = branchProcess.stdout.readLine();
+
+		return branchName;
+	}
+
+	public function getGitModified():Bool
+	{
+		var branchProcess = new sys.io.Process('git', ['status', '--porcelain']);
+
+		if (branchProcess.exitCode() != 0)
+		{
+			var message = branchProcess.stderr.readAll().toString();
+			error('Could not determine current git status; is this a proper Git repository?');
+		}
+
+		var output:String = '';
+		try {
+			output = branchProcess.stdout.readLine();
+		}
+		catch (e)
+		{
+			if (e.message == 'Eof')
+			{
+				// Do nothing.
+				// Eof = No output.
+			}
+			else
+			{
+				// Rethrow other exceptions.
+				throw e;
+			}
+		}
+
+		return output.length > 0;
 	}
 
 	public function buildHxCppTools():Void
@@ -830,14 +894,6 @@ class Project extends HXProject
 	{
 		Sys.stderr().write(Bytes.ofString(' ERROR '.error() + " " + message.fg(AnsiCode.RED).reset()));
 		Sys.exit(1);
-	}
-
-	/**
-	 * Display an notice message. This should not interfere with the build process.
-	 */
-	public function notice(message:String):Void
-	{
-		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' NOTICE '.notice() + " " + message.fg(AnsiCode.GREEN).reset());
 	}
 
 	/**

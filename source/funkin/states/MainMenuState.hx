@@ -15,6 +15,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
+import lime.app.Application;
+
 import funkin.data.*;
 import funkin.states.options.*;
 import funkin.states.*;
@@ -98,8 +100,8 @@ class MainMenuState extends MusicBeatState
 		var gitHash = GitMacro.getGitCommitHash();
 		if (gitHash.length != 0) gitHash = ' - dev($gitHash)';
 		
-		final ver = 'Goober Engine v${Main.GOOBER_VERSION}\nNightmare Vision Engine v${Main.NMV_VERSION}$gitHash\nPsych Engine v${Main.PSYCH_VERSION}\nFriday Night Funkin\' v${Main.FUNKIN_VERSION}';
-
+		final ver = 'Goober Engine v${Application.current.meta.get('version')}\nNightmare Vision Engine v${Main.NMV_VERSION}$gitHash\nPsych Engine v${Main.PSYCH_VERSION}\nFriday Night Funkin\' v${Main.FUNKIN_VERSION}';
+		
 		final verionDesc:FlxText = new FlxText(12, 0, 0, ver, 16);
 		verionDesc.setFormat(Paths.DEFAULT_FONT, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		verionDesc.borderSize = 1.5;

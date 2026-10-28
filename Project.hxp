@@ -21,15 +21,15 @@ using tools.AnsiUtil;
  * and improves management of feature flag logic.
  *
  * borrowed from FunkinCrew https://github.com/FunkinCrew/Funkin/blob/main/project.hxp
-*/
+ */
 @:nullSafety
 class Project extends HXProject
 {
 	/**
 	 * METADATA
-	*/
+	 */
 
-	static final VERSION:String = "1.0.0";
+	static final VERSION:String = "0.2.5";
 	static final TITLE:String = "Friday Night Funkin: Goober Engine";
 	static final PACKAGE_NAME:String = "me.goober.gooberEngine";
 	static final EXECUTABLE_NAME:String = "Friday Night Funkin";
@@ -39,7 +39,7 @@ class Project extends HXProject
 
 	/**
 	 * BUILD SCRIPTS
-	*/
+	 */
 
 	static final PREBUILD_HX:String = "scripts/Prebuild.hx";
 	static final POSTBUILD_HX:String = "scripts/Postbuild.hx";
@@ -47,7 +47,7 @@ class Project extends HXProject
 	/**
 	 * ENGINE CONFIGS
 	 * Inverse feature flags are automatically populated.
-	*/
+	 */
 
 	static final MODS_ALLOWED:FeatureFlag = "MODS_ALLOWED";
 	static final VIDEOS_ALLOWED:FeatureFlag = "VIDEOS_ALLOWED";
@@ -60,7 +60,7 @@ class Project extends HXProject
 
 	/**
 	 * CONFIGURATION FUNCTIONS
-	*/
+	 */
 
 	public function new()
 	{
@@ -91,26 +91,22 @@ class Project extends HXProject
 
 		notice("Configured project successfully!");
 		info("Starting build...");
-		Sys.println("");
 	}
 
 	/**
 	 * Do something before building, display some ASCII or something IDK
-	*/
+	 */
 	function flair()
 	{
 		info("Goober Engine - " + VERSION);
 		info("Initializing build...");
 
-		info("Git Branch:	 " + getGitBranch());
-		info("Git Commit:	 " + getGitCommit());
-		info("Git Modified?   " + getGitModified());
 		info("Display?		" + isDisplay());
 	}
 
 	/**
 	 * APP SETTINGS
-	*/
+	 */
 	function configureApp()
 	{
 		this.meta.title = TITLE;
@@ -161,7 +157,7 @@ class Project extends HXProject
 
 	/**
 	 * Log information about the configured target platform.
-	*/
+	 */
 	function displayTarget()
 	{
 		// Display the target operating system.
@@ -209,7 +205,7 @@ class Project extends HXProject
 
 	/**
 	 * ENGINE CONFIGS
-	*/
+	 */
 	function configureFeatureFlags()
 	{
 		// You can explicitly override any of these.
@@ -228,7 +224,7 @@ class Project extends HXProject
 
 	/**
 	 * Renders a cute little table of which feature flags are enabled and which are disabled
-	*/
+	 */
 	function renderFlagsTable():Void
 	{
 		var enabledWidth:Int = 0;
@@ -283,7 +279,7 @@ class Project extends HXProject
 
 	/**
 	 * HAXEDEFS
-	*/
+	 */
 	function configureCompileDefines()
 	{
 		// Needed for haxeui
@@ -332,7 +328,7 @@ class Project extends HXProject
 
 	/**
 	 * MACROS
-	*/
+	 */
 	function configureMacros()
 	{
 		addHaxeMacro("addMetadata('@:build(funkin.backend.macro.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')");
@@ -373,7 +369,7 @@ class Project extends HXProject
 
 	/**
 	 * HAXE LIBS
-	**/
+	 */
 	function configureHaxelibs()
 	{
 		addHaxelib('openfl');
@@ -412,7 +408,7 @@ class Project extends HXProject
 		addAssetPath("assets/embeds", "assets", "default", ["*"], null, true);
 		addAssetPath("assets/game", "assets", "default", ["*"], null, false);
 
-		addAssetPath("content", "content", "default", ["*"], null, shouldEmbedMods);
+		if (MODS_ALLOWED.isEnabled(this)) addAssetPath("content", "content", "default", ["*"], null, shouldEmbedMods);
 
 		// OpenAL config (appreciate you cyn0x8 and smokey for finding this)
 		if (isDesktop()) addAsset("projFiles/alsoft.ini", isWindows() ? "alsoft.ini" : "alsoft.conf", null, false);
@@ -464,7 +460,7 @@ class Project extends HXProject
 	/**
 	 * Recursively delete a directory and its contents.
 	 * @param path The path to the directory to delete.
-	*/
+	 */
 	function deleteDirectoryRecursive(path:String):Void
 	{
 		if (!FileSystem.exists(path)) return;
@@ -481,7 +477,7 @@ class Project extends HXProject
 
 	/**
 	 * MISCELLANEOUS
-	*/
+	 */
 	function configureIcons()
 	{
 		info('Configuring application icons...');
@@ -497,7 +493,7 @@ class Project extends HXProject
 	/**
 	 * HELPER FUNCTIONS
 	 * Easy functions to make the code more readable.
-	*/
+	 */
 
 	public function isWeb():Bool
 	{
@@ -665,7 +661,7 @@ class Project extends HXProject
 	 * Add a library to the list of dependencies for the project.
 	 * @param name The name of the library to add.
 	 * @param version The version of the library to add. Optional.
-	*/
+	 */
 	public function addHaxelib(name:String, version:String = ""):Void
 	{
 		this.haxelibs.push(new Haxelib(name, version));
@@ -673,7 +669,7 @@ class Project extends HXProject
 
 	/**
 	 * Add a `haxeflag` to the project.
-	*/
+	 */
 	public function addHaxeFlag(value:String):Void
 	{
 		this.haxeflags.push(value);
@@ -681,7 +677,7 @@ class Project extends HXProject
 
 	/**
 	 * Call a Haxe build macro.
-	*/
+	 */
 	public function addHaxeMacro(value:String):Void
 	{
 		addHaxeFlag('--macro ${value}');
@@ -691,7 +687,7 @@ class Project extends HXProject
 	 * Add an icon to the project.
 	 * @param icon The path to the icon.
 	 * @param size The size of the icon. Optional.
-	*/
+	 */
 	public function addIcon(icon:String, ?size:Int):Void
 	{
 		this.icons.push(new Icon(icon, size));
@@ -703,7 +699,7 @@ class Project extends HXProject
 	 * @param rename The path the asset should be placed.
 	 * @param library The asset library to add the asset to. `null` = "default"
 	 * @param embed Whether to embed the asset in the executable.
-	*/
+	 */
 	public function addAsset(path:String, ?rename:String, ?library:String, embed:Bool = false):Void
 	{
 		// path, rename, type, embed, setDefaults
@@ -723,7 +719,7 @@ class Project extends HXProject
 	 * @param include An optional array to include specific asset names.
 	 * @param exclude An optional array to exclude specific asset names.
 	 * @param embed Whether to embed the assets in the executable.
-	*/
+	 */
 	public function addAssetPath(path:String, ?rename:String, library:String, ?include:Array<String>, ?exclude:Array<String>, embed:Bool = false):Void
 	{
 		// Argument parsing.
@@ -760,7 +756,7 @@ class Project extends HXProject
 	 * @param name The name of the library.
 	 * @param embed
 	 * @param preload
-	*/
+	 */
 	public function addAssetLibrary(name:String, embed:Bool = false, preload:Bool = false):Void
 	{
 		// sourcePath, name, type, embed, preload, generate, prefix
@@ -770,11 +766,11 @@ class Project extends HXProject
 
 	/**
 	 * PROCESS FUNCTIONS
-	*/
+	 */
 
 	/**
 	 * A CLI command to run a command in the shell.
-	*/
+	 */
 	public function buildCLICommand(cmd:String):CLICommand
 	{
 		return CommandHelper.fromSingleString(cmd);
@@ -782,25 +778,10 @@ class Project extends HXProject
 
 	/**
 	 * A CLI command to run a Haxe script via `--interp`.
-	*/
+	 */
 	public function buildHaxeCLICommand(path:String):CLICommand
 	{
 		return CommandHelper.interpretHaxe(path);
-	}
-
-	public function getGitCommit():String
-	{
-		var process = new sys.io.Process('git', ['rev-parse', 'HEAD']);
-		if (process.exitCode() != 0)
-		{
-			var message = process.stderr.readAll().toString();
-			error('Could not determine current git commit; is this a proper Git repository?');
-		}
-
-		var commitHash:String = process.stdout.readLine();
-		var commitHashSplice:String = commitHash.substr(0, 7);
-
-		return commitHashSplice;
 	}
 
 	static function getLibraryPath(libraryName:String):String
@@ -808,52 +789,6 @@ class Project extends HXProject
 		var process = new sys.io.Process('haxelib', ['libpath', libraryName]);
 		@:privateAccess
 		return process.stdout.readLine();
-	}
-
-	public function getGitBranch():String
-	{
-		var branchProcess = new sys.io.Process('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
-
-		if (branchProcess.exitCode() != 0)
-		{
-			var message = branchProcess.stderr.readAll().toString();
-			error('Could not determine current git branch; is this a proper Git repository?');
-		}
-
-		var branchName:String = branchProcess.stdout.readLine();
-
-		return branchName;
-	}
-
-	public function getGitModified():Bool
-	{
-		var branchProcess = new sys.io.Process('git', ['status', '--porcelain']);
-
-		if (branchProcess.exitCode() != 0)
-		{
-			var message = branchProcess.stderr.readAll().toString();
-			error('Could not determine current git status; is this a proper Git repository?');
-		}
-
-		var output:String = '';
-		try {
-			output = branchProcess.stdout.readLine();
-		}
-		catch (e)
-		{
-			if (e.message == 'Eof')
-			{
-				// Do nothing.
-				// Eof = No output.
-			}
-			else
-			{
-				// Rethrow other exceptions.
-				throw e;
-			}
-		}
-
-		return output.length > 0;
 	}
 
 	public function buildHxCppTools():Void
@@ -886,11 +821,11 @@ class Project extends HXProject
 
 	/**
 	 * LOGGING FUNCTIONS
-	*/
+	 */
 
 	/**
 	 * Display an error message. This should stop the build process.
-	*/
+	 */
 	public function error(message:String):Void
 	{
 		Sys.stderr().write(Bytes.ofString(' ERROR '.error() + " " + message.fg(AnsiCode.RED).reset()));
@@ -899,7 +834,7 @@ class Project extends HXProject
 
 	/**
 	 * Display an notice message. This should not interfere with the build process.
-	*/
+	 */
 	public function notice(message:String):Void
 	{
 		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' NOTICE '.notice() + " " + message.fg(AnsiCode.GREEN).reset());
@@ -907,7 +842,7 @@ class Project extends HXProject
 
 	/**
 	 * Display an info message. This should not interfere with the build process.
-	*/
+	 */
 	public function info(message:String):Void
 	{
 		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' INFO '.info() + " " + message);
@@ -917,7 +852,7 @@ class Project extends HXProject
 /**
  * An object representing a feature flag, which can be enabled or disabled.
  * Includes features such as automatic generation of compile defines and inversion.
-*/
+ */
 abstract FeatureFlag(String) from String to String
 {
 	public static final INVERSE_PREFIX:String = "NO_";
@@ -937,7 +872,7 @@ abstract FeatureFlag(String) from String to String
 	 * Enable/disable a feature flag if it is unset, and handle the inverse flag.
 	 * Doesn't override a feature flag that was set explicitly.
 	 * @param enableByDefault Whether to enable this feature flag if it is unset.
-	*/
+	 */
 	public function apply(project:Project, enableByDefault:Bool = false):Void
 	{
 		// TODO: Name this function better?
@@ -956,7 +891,7 @@ abstract FeatureFlag(String) from String to String
 	 *
 	 * @param project The project to modify.
 	 * @param andInverse Also disable the feature flag's inverse.
-	*/
+	 */
 	public function enable(project:Project, andInverse:Bool = true)
 	{
 		project.setHaxedef(this, "");
@@ -968,7 +903,7 @@ abstract FeatureFlag(String) from String to String
 	 *
 	 * @param project The project to modify.
 	 * @param andInverse Also enable the feature flag's inverse.
-	*/
+	 */
 	public function disable(project:Project, andInverse:Bool = true)
 	{
 		project.unsetHaxedef(this);
@@ -978,7 +913,7 @@ abstract FeatureFlag(String) from String to String
 	/**
 	 * Query if this feature flag is enabled.
 	 * @param project The project to query.
-	*/
+	 */
 	public function isEnabled(project:Project):Bool
 	{
 		// Check both Haxedefs and Defines for this flag.
@@ -987,7 +922,7 @@ abstract FeatureFlag(String) from String to String
 
 	/**
 	 * Query if this feature flag's inverse is enabled.
-	*/
+	 */
 	public function isDisabled(project:Project):Bool
 	{
 		return getInverse().isEnabled(project);
@@ -996,7 +931,7 @@ abstract FeatureFlag(String) from String to String
 	/**
 	 * Return the inverse of this feature flag.
 	 * @return A new feature flag that is the inverse of this one.
-	*/
+	 */
 	public function getInverse():FeatureFlag
 	{
 		if (this.startsWith(INVERSE_PREFIX)) return this.substring(INVERSE_PREFIX.length);

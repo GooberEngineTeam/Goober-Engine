@@ -6,6 +6,8 @@ import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.display.StageScaleMode;
 
+import lime.app.Application;
+
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.input.keyboard.FlxKey;
@@ -15,9 +17,8 @@ import funkin.backend.DebugDisplay;
 @:nullSafety(Strict)
 class Main extends Sprite
 {
-	public static final GOOBER_VERSION:String = '1.0';
 	public static final PSYCH_VERSION:String = '0.5.2h';
-	public static final NMV_VERSION:String = '1.0';
+	public static final NMV_VERSION:String = '1.0.0';
 	public static final FUNKIN_VERSION:String = '0.2.7';
 	
 	public static final startMeta =

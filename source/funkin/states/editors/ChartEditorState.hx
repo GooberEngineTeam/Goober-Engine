@@ -1282,7 +1282,7 @@ class ChartEditorState extends haxe.ui.backend.flixel.UIState
 			else if (FlxG.keys.pressed.SHIFT) holdingShift = 4;
 			
 			var delta:Float = (700 * FlxG.elapsed * holdingShift);
-
+			
 			resetLittleFriends();
 			
 			audio.time = FlxMath.bound(audio.time + delta * (FlxG.keys.pressed.W ? -1 : 1), 0, audio.songLength - endOffset);
@@ -1832,7 +1832,7 @@ class ChartEditorState extends haxe.ui.backend.flixel.UIState
 		toggleMusic(false);
 		// Basically old shit from changeSection???
 		audio.time = sectionStartTime();
-
+		
 		resetLittleFriends();
 		
 		if (songBeginning)
@@ -1963,7 +1963,7 @@ class ChartEditorState extends haxe.ui.backend.flixel.UIState
 		
 		leftIcon.y = (-leftIcon.height);
 		rightIcon.y = (-rightIcon.height);
-
+		
 		leftIcon.frameCount = CharacterParser.fetchInfo(song.player1).icon_count;
 		rightIcon.frameCount = CharacterParser.fetchInfo(song.player2).icon_count;
 		

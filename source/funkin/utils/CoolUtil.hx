@@ -136,7 +136,7 @@ class CoolUtil
 		Sys.command(command, [folder]);
 		Logger.log('Command: $command, Folder: $folder');
 		#else
-		FlxG.error("Platform is not supported for CoolUtil.openFolder");
+		FlxG.log.error("Platform is not supported for CoolUtil.openFolder");
 		#end
 	}
 	

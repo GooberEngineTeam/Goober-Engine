@@ -70,8 +70,6 @@ class Project extends HXProject
 		if (isWindowsHost()) Sys.command("chcp 65001 > nul"); // Enable code page 65001 for unicode support
 		#end
 
-        info("Configuring project...");
-
 		flair();
 		displayTarget();
 		configureApp();
@@ -86,8 +84,6 @@ class Project extends HXProject
 		configureAssets();
 		
 		if (!isLinux()) configureIcons();
-
-		if (isCPP()) buildHxCppTools();
 
 		info("Configured project successfully!");
 		info("Starting build...");
@@ -802,13 +798,6 @@ class Project extends HXProject
 		return commitHashSplice;
 	}
 
-	static function getLibraryPath(libraryName:String):String
-	{
-		var process = new sys.io.Process('haxelib', ['libpath', libraryName]);
-		@:privateAccess
-		return process.stdout.readLine();
-	}
-
 	public function getGitBranch():String
 	{
 		var branchProcess = new sys.io.Process('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
@@ -855,34 +844,6 @@ class Project extends HXProject
 		return output.length > 0;
 	}
 
-	public function buildHxCppTools():Void
-	{
-		var path:String = getLibraryPath("hxcpp");
-		var dotNPath:String = haxe.io.Path.join([path, 'hxcpp.n']);
-		var toolsPath:String = haxe.io.Path.join([path, 'tools/hxcpp']);
-
-		// The output can be an error message if the library doesn't exist.
-		if (path.toLowerCase().startsWith("error") || !FileSystem.exists(path)) error('HXCPP could not be found while on C++ target.');
-
-		// Build Tools are compiled, no need for us to do it.
-		if (FileSystem.exists(dotNPath)) return;
-
-		info('Compiling the HXCPP Build Tool...');
-
-		var oldDir:String = Sys.getCwd();
-		info(toolsPath);
-		Sys.setCwd(toolsPath);
-
-		var compileProcess = new sys.io.Process('haxe', ['compile.hxml']);
-
-		if (compileProcess.exitCode() != 0) info('Could not compile the Build Tool. Is HXCPP installed correctly? Continuing...');
-		else info('Compiled the HXCPP Build Tool successfully!');
-
-		compileProcess.close();
-
-		Sys.setCwd(oldDir);
-	}
-
 	/**
 	 * LOGGING FUNCTIONS
 	 */
@@ -894,6 +855,14 @@ class Project extends HXProject
 	{
 		Sys.stderr().write(Bytes.ofString(' ERROR '.error() + " " + message.fg(AnsiCode.RED).reset()));
 		Sys.exit(1);
+	}
+
+	/**
+	 * Display an warning message. This should not interfere with the build process.
+	 */
+	public function warn(message:String):Void
+	{
+		if (!(isDisplay() || isCleanCommand() || isRun() || isInstall())) Sys.println(' WARN '.warning() + " " + message);
 	}
 
 	/**

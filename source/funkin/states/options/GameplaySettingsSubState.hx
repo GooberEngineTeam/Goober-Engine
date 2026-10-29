@@ -62,15 +62,19 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 30;
 		addOption(option);
 		
+		#if FEATURE_EPIC_RATINGS
 		var option:Option = new Option('Use Epic Ratings', // Name
 			'If checked, adds Epic Ratings as a bonus judgement above sick (does not affect accuracy, only your score).', // Description
 			'useEpicRankings', // Save data variable name
 			BOOL, // Variable type
 			true); // Default value
 		addOption(option);
+		#end
 		
 		// Display Name, Variable (in ClientPrefs), Minimum Valeu, Maximum Value, Scroll Speed (when holding down Left/Right)
+		#if FEATURE_EPIC_RATINGS
 		addHitWindowOption("Epic!", "epicWindow", 15.0, 22.5, 15);
+		#end
 		addHitWindowOption("Sick!", "sickWindow", 15.0, 45.0, 30);
 		addHitWindowOption("Good", "goodWindow", 15.0, 90.0, 60);
 		addHitWindowOption("Bad", "badWindow", 15.0, 135.0, 90);

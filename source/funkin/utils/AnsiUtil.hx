@@ -27,6 +27,11 @@ enum abstract AnsiCode(String) from String to String
 	// 38 has two modes
 	// [38;2;#m uses one of 256 colors
 	public var ORANGE = '\x1b[38;5;208m';
+	// [38;2;RR;GG;BBm uses 24-bit color RGB
+	public var NOTE_LEFT = '\x1b[38;2;255;34;170m';
+	public var NOTE_DOWN = '\x1b[38;2;0;238;255m';
+	public var NOTE_UP = '\x1b[38;2;0;204;0m';
+	public var NOTE_RIGHT = '\x1b[38;2;204;17;17m';
 	// 40-47 set background to standard colors
 	public var BG_BLACK = '\x1b[40m';
 	public var BG_RED = '\x1b[41m';
@@ -58,6 +63,10 @@ enum abstract AnsiCode(String) from String to String
 	public var BG_LIGHT_PINK = '\x1b[48;5;213m';
 	// [48;2;RR;GG;BBm uses 24-bit color RGB
 	public var BG_PURPLE = '\x1b[48;2;121;37;199m';
+	public var BG_NOTE_LEFT = '\x1b[48;2;255;34;170m';
+	public var BG_NOTE_DOWN = '\x1b[48;2;0;238;255m';
+	public var BG_NOTE_UP = '\x1b[48;2;0;204;0m';
+	public var BG_NOTE_RIGHT = '\x1b[48;2;204;17;17m';
 	// 90-97 sets a bright foreground color (non-standard)
 	public var BRIGHT_BLACK = '\x1b[90m';
 	public var BRIGHT_RED = '\x1b[91m';
@@ -111,7 +120,7 @@ class AnsiUtil
 
 	// Common combos
 
-	public static inline function error(str:String):String return AnsiUtil.bold(AnsiUtil.bg_red(str));
+	public static inline function error(str:String):String return AnsiUtil.bold(AnsiUtil.bg_note_right(str));
 	public static inline function warning(str:String):String return AnsiUtil.bold(AnsiUtil.bg_yellow(str));
 	public static inline function info(str:String):String return AnsiUtil.bold(AnsiUtil.bg_blue(str));
 	public static inline function notice(str:String):String return AnsiUtil.bold(AnsiUtil.bg_green(str));
@@ -150,6 +159,12 @@ class AnsiUtil
 	public static inline function bg_orange(str:String):String return apply(str, AnsiCode.BG_ORANGE);
 	public static inline function bg_purple(str:String):String return apply(str, AnsiCode.BG_PURPLE);
 	public static inline function bg_bright_lilac(str:String):String return apply(str, AnsiCode.BG_BRIGHT_LILAC);
+
+	// Background note colors
+	public static inline function bg_note_left(str:String):String return apply(str, AnsiCode.BG_NOTE_LEFT);
+	public static inline function bg_note_down(str:String):String return apply(str, AnsiCode.BG_NOTE_DOWN);
+	public static inline function bg_note_up(str:String):String return apply(str, AnsiCode.BG_NOTE_UP);
+	public static inline function bg_note_right(str:String):String return apply(str, AnsiCode.BG_NOTE_RIGHT);
 
 	// Bright foreground colors
 

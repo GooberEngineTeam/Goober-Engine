@@ -34,7 +34,17 @@ enum abstract UnderlayType(String) to String from String
 class ClientPrefs
 {
 	// debug ------------------------------------------------------------------------//
+	#if FEATURE_DEV_MODE
 	@saveVar public static var inDevMode:Bool = false;
+	#else
+	public static var inDevMode(get, never):Bool;
+	
+	static function get_inDevMode():Bool
+	{
+		Logger.log("inDevMode is not available on this build!", WARN, false);
+		return false;
+	}
+	#end
 	
 	@saveVar public static var discordEnabled:Bool = true;
 	
@@ -107,7 +117,17 @@ class ClientPrefs
 	
 	@saveVar public static var ratingOffset:Int = 0;
 	
+	#if FEATURE_EPIC_RATINGS
 	@saveVar public static var useEpicRankings:Bool = true;
+	#else
+	public static var useEpicRankings(get, never):Bool;
+	
+	static function get_useEpicRankings():Bool
+	{
+		Logger.log("useEpicRankings is not available on this build!", WARN, false);
+		return false;
+	}
+	#end
 	
 	@saveVar public static var toggleSplashScreen:Bool = true;
 	

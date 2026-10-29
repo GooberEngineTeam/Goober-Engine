@@ -58,6 +58,10 @@ class Project extends HXProject
 	static final FEATURE_DEBUG_TRACY:FeatureFlag = "FEATURE_DEBUG_TRACY";
 	static final CRASH_HANDLER:FeatureFlag = "CRASH_HANDLER";
 
+	static final FEATURE_TOUCH_HERE_TO_PLAY:FeatureFlag = "FEATURE_TOUCH_HERE_TO_PLAY";
+	static final FEATURE_EPIC_RATINGS:FeatureFlag = "FEATURE_EPIC_RATINGS";
+	static final FEATURE_DEV_MODE:FeatureFlag = "FEATURE_DEV_MODE";
+
 	/**
 	 * CONFIGURATION FUNCTIONS
 	 */
@@ -217,6 +221,11 @@ class Project extends HXProject
 
 		ASSET_REDIRECT.apply(this, false);
 		CRASH_HANDLER.apply(this, true);
+
+		FEATURE_DEBUG_TRACY.apply(this, false);
+
+		FEATURE_EPIC_RATINGS.apply(this, true);
+		FEATURE_DEV_MODE.apply(this, false);
 
 		renderFlagsTable();
 	}

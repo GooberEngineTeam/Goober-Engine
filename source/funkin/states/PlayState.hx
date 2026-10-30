@@ -2736,9 +2736,11 @@ class PlayState extends MusicBeatState
 			
 			if (ClientPrefs.noteCamType == "Dynamic")
 			{
+				final thingy = (displacement.x * 0.05) * defaultCamZoom;
+				
 				if (camAngleOffsetTween != null) camAngleOffsetTween.cancel();
 				
-				camAngleOffsetTween = FlxTween.tween(this, {camAngleOffset: displacement.x * 0.05}, 1.4 / (cameraSpeed * playbackRate),
+				camAngleOffsetTween = FlxTween.tween(this, {camAngleOffset: thingy}, 1.4 / (cameraSpeed * playbackRate),
 					{
 						ease: FlxEase.expoOut,
 						onComplete: function(twn:FlxTween) {

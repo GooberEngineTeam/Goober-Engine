@@ -60,6 +60,7 @@ class Project extends HXProject
 
 	static final FEATURE_EPIC_RATINGS:FeatureFlag = "FEATURE_EPIC_RATINGS";
 	static final FEATURE_DEV_MODE:FeatureFlag = "FEATURE_DEV_MODE";
+	static final FEATURE_NOTE_FOLLOW:FeatureFlag = "FEATURE_NOTE_FOLLOW";
 
 	/**
 	 * CONFIGURATION FUNCTIONS
@@ -224,7 +225,8 @@ class Project extends HXProject
 		FEATURE_DEBUG_TRACY.apply(this, false);
 
 		FEATURE_EPIC_RATINGS.apply(this, true);
-		FEATURE_DEV_MODE.apply(this, false);
+		FEATURE_DEV_MODE.apply(this, true);
+		FEATURE_NOTE_FOLLOW.apply(this, false);
 
 		renderFlagsTable();
 	}

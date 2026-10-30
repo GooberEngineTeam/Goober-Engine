@@ -46,6 +46,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Flashing Lights', "Uncheck this if you're sensitive to flashing lights!", 'flashing', BOOL, true);
 		addOption(option);
 
+		#if FEATURE_NOTE_FOLLOW
 		var option:Option = new Option('Note Follow Type:',
 			"How should the camera move upon hitting a note?",
 			'noteCamType',
@@ -66,6 +67,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		option.displayFormat = '%vx';
 		addOption(option);
+		#end
 		
 		super();
 	}

@@ -39,11 +39,7 @@ class ClientPrefs
 	#else
 	public static var inDevMode(get, never):Bool;
 	
-	static function get_inDevMode():Bool
-	{
-		Logger.log("inDevMode is not available on this build!", WARN, false);
-		return false;
-	}
+	static function get_inDevMode():Bool return false;
 	#end
 	
 	@saveVar public static var discordEnabled:Bool = true;
@@ -90,9 +86,19 @@ class ClientPrefs
 	
 	@saveVar public static var healthBarAlpha:Float = 1;
 	
+	#if FEATURE_NOTE_FOLLOW
 	@saveVar public static var noteCamIntensity:Float = 1.0;
 	
 	@saveVar public static var noteCamType:String = 'Simple';
+	#else
+	public static var noteCamIntensity(get, never):Float;
+
+	static function get_noteCamIntensity():Float return 0.0;
+
+	public static var noteCamType(get, never):String;
+
+	static function get_noteCamType():String return "Disabled";
+	#end
 	
 	@saveVar public static var underlayType:String = 'Lane Underlay';
 	
@@ -122,11 +128,7 @@ class ClientPrefs
 	#else
 	public static var useEpicRankings(get, never):Bool;
 	
-	static function get_useEpicRankings():Bool
-	{
-		Logger.log("useEpicRankings is not available on this build!", WARN, false);
-		return false;
-	}
+	static function get_useEpicRankings():Bool return false;
 	#end
 	
 	@saveVar public static var toggleSplashScreen:Bool = true;

@@ -1,6 +1,6 @@
 package funkin.api;
 
-#if DISCORD_ALLOWED
+#if FEATURE_DISCORD_RPC
 import sys.thread.Thread;
 
 import hxdiscord_rpc.Types.DiscordEventHandlers;

@@ -51,13 +51,13 @@ class Project extends HXProject
 
 	static final MODS_ALLOWED:FeatureFlag = "MODS_ALLOWED";
 	static final VIDEOS_ALLOWED:FeatureFlag = "VIDEOS_ALLOWED";
-	static final DISCORD_ALLOWED:FeatureFlag = "DISCORD_ALLOWED";
 	static final FOXLITE_ALLOWED:FeatureFlag = "FOXLITE_ALLOWED";
 
 	static final ASSET_REDIRECT:FeatureFlag = "ASSET_REDIRECT";
 	static final FEATURE_DEBUG_TRACY:FeatureFlag = "FEATURE_DEBUG_TRACY";
 	static final CRASH_HANDLER:FeatureFlag = "CRASH_HANDLER";
 
+	static final FEATURE_DISCORD_RPC:FeatureFlag = "FEATURE_DISCORD_RPC";
 	static final FEATURE_EPIC_RATINGS:FeatureFlag = "FEATURE_EPIC_RATINGS";
 	static final FEATURE_DEV_MODE:FeatureFlag = "FEATURE_DEV_MODE";
 	static final FEATURE_NOTE_FOLLOW:FeatureFlag = "FEATURE_NOTE_FOLLOW";
@@ -217,7 +217,6 @@ class Project extends HXProject
 
 		MODS_ALLOWED.apply(this, isDesktop());
 		VIDEOS_ALLOWED.apply(this, isCPP());
-		DISCORD_ALLOWED.apply(this, isCPP() && (!isAndroid() || !isIOS()));
 		FOXLITE_ALLOWED.apply(this, true);
 
 		ASSET_REDIRECT.apply(this, false);
@@ -225,6 +224,7 @@ class Project extends HXProject
 
 		FEATURE_DEBUG_TRACY.apply(this, false);
 
+		FEATURE_DISCORD_RPC.apply(this, isCPP() && (!isAndroid() || !isIOS()));
 		FEATURE_EPIC_RATINGS.apply(this, true);
 		FEATURE_DEV_MODE.apply(this, true);
 		FEATURE_NOTE_FOLLOW.apply(this, true);
@@ -403,7 +403,7 @@ class Project extends HXProject
 
 		addHaxelib('json5hx');
 
-		if (DISCORD_ALLOWED.isEnabled(this)) addHaxelib('hxdiscord_rpc', '1.3.0');
+		if (FEATURE_DISCORD_RPC.isEnabled(this)) addHaxelib('hxdiscord_rpc', '1.3.0');
 		if (VIDEOS_ALLOWED.isEnabled(this)) addHaxelib('hxvlc');
 	}
 

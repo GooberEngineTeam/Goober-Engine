@@ -50,9 +50,11 @@ class ClientPrefs
 	
 	@saveVar public static var autoPause:Bool = true;
 	
+	#if FEATURE_SCREENSHOTS
 	@saveVar public static var fancyPreview:Bool = true;
 	
 	@saveVar public static var previewOnSave:Bool = true;
+	#end
 	
 	// graphics ------------------------------------------------------------------------//
 	@saveVar public static var gpuCaching:Bool = true;

@@ -49,7 +49,9 @@ enum abstract Action(String) to String from String
 	var PAUSE = "pause";
 	var RESET = "reset";
 
+	#if FEATURE_SCREENSHOTS
 	var SCREENSHOT = "screenshot";
+	#end
 	var FULLSCREEN = "fullscreen";
 	
 	var SWITCH_DEBUG_DISPLAY = "switch_debug_display";
@@ -84,7 +86,11 @@ enum Control
 	ACCEPT;
 	BACK;
 	PAUSE;
+
+	#if FEATURE_SCREENSHOTS
 	SCREENSHOT;
+	#end
+
 	FULLSCREEN;
 	SWITCH_DEBUG_DISPLAY;
 	SOFT_RELOAD;
@@ -166,7 +172,9 @@ class Controls extends FlxActionSet
 	var _reset = new FlxActionDigital(Action.RESET);
 
 	var _fullscreen = new FlxActionDigital(Action.FULLSCREEN);
+	#if FEATURE_SCREENSHOTS
 	var _screenshot = new FlxActionDigital(Action.SCREENSHOT);
+	#end
 	var _switch_debug_display = new FlxActionDigital(Action.SWITCH_DEBUG_DISPLAY);
 	
 	var _soft_reload = new FlxActionDigital(Action.SOFT_RELOAD);
@@ -306,9 +314,11 @@ class Controls extends FlxActionSet
 	
 	inline function get_FULLSCREEN() return _fullscreen.check();
 
+	#if FEATURE_SCREENSHOTS
 	public var SCREENSHOT(get, never):Bool;
 	
 	inline function get_SCREENSHOT() return _screenshot.check();
+	#end
 
 	public var SWITCH_DEBUG_DISPLAY(get, never):Bool;
 	
@@ -358,7 +368,9 @@ class Controls extends FlxActionSet
 		add(_pause);
 		add(_reset);
 		add(_fullscreen);
+		#if FEATURE_SCREENSHOTS
 		add(_screenshot);
+		#end
 		add(_switch_debug_display);
 		add(_soft_reload);
 		add(_hard_reload);
@@ -387,7 +399,9 @@ class Controls extends FlxActionSet
 			case PAUSE: _pause;
 			case RESET: _reset;
 			case FULLSCREEN: _fullscreen;
+			#if FEATURE_SCREENSHOTS
 			case SCREENSHOT: _screenshot;
+			#end
 			case SWITCH_DEBUG_DISPLAY: _switch_debug_display;
 			case SOFT_RELOAD: _soft_reload;
 			case HARD_RELOAD: _hard_reload;
@@ -450,8 +464,10 @@ class Controls extends FlxActionSet
 				func(_reset, JUST_PRESSED);
 			case FULLSCREEN:
 				func(_fullscreen, JUST_PRESSED);
+			#if FEATURE_SCREENSHOTS
 			case SCREENSHOT:
 				func(_screenshot, JUST_PRESSED);
+			#end
 			case SWITCH_DEBUG_DISPLAY:
 				func(_switch_debug_display, JUST_PRESSED);
 			case SOFT_RELOAD:
@@ -667,7 +683,9 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.RESET, keysMap.get('reset'));
 
 				inline bindKeys(Control.FULLSCREEN, keysMap.get('fullscreen'));
+				#if FEATURE_SCREENSHOTS
 				inline bindKeys(Control.SCREENSHOT, keysMap.get('screenshot'));
+				#end
 				inline bindKeys(Control.SWITCH_DEBUG_DISPLAY, keysMap.get('switch_debug_display'));
 				
 				inline bindKeys(Control.SOFT_RELOAD, keysMap.get('soft_reload'));

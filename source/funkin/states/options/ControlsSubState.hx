@@ -69,7 +69,9 @@ class ControlsSubState extends MusicBeatSubstate
 		];
 		
 		WINDOW_GROUP = [
+			#if FEATURE_SCREENSHOTS
 			{label: "Screenshot", action: SCREENSHOT},
+			#end
 			{label: "Fullscreen", action: FULLSCREEN},
 			null,
 		];

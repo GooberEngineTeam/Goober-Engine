@@ -1,5 +1,6 @@
 package funkin.backend.plugins;
 
+#if FEATURE_SCREENSHOTS
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -546,3 +547,4 @@ class ScreenshotPlugin extends FlxBasic
 		}
 	}
 }
+#end

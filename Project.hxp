@@ -228,7 +228,7 @@ class Project extends HXProject
 		FEATURE_EPIC_RATINGS.apply(this, true);
 		FEATURE_DEV_MODE.apply(this, true);
 		FEATURE_NOTE_FOLLOW.apply(this, true);
-		FEATURE_SCREENSHOTS.apply(this, false);
+		FEATURE_SCREENSHOTS.apply(this, isDesktop());
 
 		renderFlagsTable();
 	}

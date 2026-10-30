@@ -41,4 +41,5 @@ import funkin.backend.MusicBeatState;
 using flixel.util.FlxArrayUtil;
 
 using StringTools;
+using funkin.utils.AnsiUtil;
 #end

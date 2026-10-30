@@ -60,6 +60,7 @@ class Logger
 			DebugTextPlugin.instance.addText(Std.string(data), getHexColourFromSeverity(severity));
 		}
 		
+		#if FEATURE_LOG_TRACE
 		var log:String = '${haxe.Log.formatOutput(data, pos)}'.fg(getAnsiColourFromSeverity(severity)).reset();
 		var output:String = '${severity.toString()} $log';
 		
@@ -67,6 +68,7 @@ class Logger
 		Sys.println(output);
 		#else
 		trace(output); // idk others lol!
+		#end
 		#end
 	}
 

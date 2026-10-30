@@ -63,6 +63,8 @@ class Project extends HXProject
 	static final FEATURE_NOTE_FOLLOW:FeatureFlag = "FEATURE_NOTE_FOLLOW";
 	static final FEATURE_SCREENSHOTS:FeatureFlag = "FEATURE_SCREENSHOTS";
 
+	static final FEATURE_LOG_TRACE:FeatureFlag = "FEATURE_LOG_TRACE";
+
 	/**
 	 * CONFIGURATION FUNCTIONS
 	 */
@@ -230,6 +232,8 @@ class Project extends HXProject
 		FEATURE_NOTE_FOLLOW.apply(this, true);
 		FEATURE_SCREENSHOTS.apply(this, isDesktop());
 
+		FEATURE_LOG_TRACE.apply(this, true);
+
 		renderFlagsTable();
 	}
 
@@ -318,6 +322,8 @@ class Project extends HXProject
 			setHaxedef("HXCPP_STACK_LINE");
 			setHaxedef("HXCPP_STACK_TRACE");
 		}
+
+		if (FEATURE_LOG_TRACE.isDisabled(this)) setHaxedef("no-traces");
 
 		// Remove the legacy health system
 		setHaxedef("FLX_NO_HEALTH");
